@@ -71,7 +71,7 @@ def parse_page(page: dict) -> dict:
     item = {}
 
     # Nome / título
-    for col in ("Nome", "Título", "Evento", "Name", "Title"):
+    for col in ("Nome do Evento", "Nome", "Título", "Evento", "Name", "Title"):
         val = get_text(p(col))
         if val:
             item["nome"] = val
