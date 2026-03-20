@@ -14,7 +14,7 @@ from urllib.error import URLError, HTTPError
 
 # ── Configuração ──────────────────────────────────────────────────────────────
 NOTION_TOKEN   = os.environ["NOTION_TOKEN"]
-DATABASE_ID    = "3283838fa82680fb8dd7d093e582b3c1"
+DATABASE_ID    = "3283838fa826804bbd51f348624b7ed6"
 OUTPUT_FILE    = "data.json"
 NOTION_VERSION = "2022-06-28"
 # ─────────────────────────────────────────────────────────────────────────────
