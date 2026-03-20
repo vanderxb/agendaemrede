@@ -1,0 +1,40 @@
+name: Atualizar Agenda
+
+on:
+  # Roda a cada 6 horas automaticamente
+  schedule:
+    - cron: '0 */6 * * *'
+
+  # Permite rodar manualmente pelo GitHub
+  workflow_dispatch:
+
+  # Roda também a cada push no main
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Buscar dados do Notion
+        run: python fetch_notion.py
+
+      - name: Commitar data.json atualizado
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          git diff --staged --quiet || git commit -m "chore: atualiza agenda $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
