@@ -130,6 +130,7 @@
       opacity: 0;
       transform: translateY(10px);
       animation: fadeUp 0.35s ease forwards;
+      overflow: hidden;
     }
 
     .card:hover {
@@ -139,6 +140,15 @@
 
     .card.past { opacity: 0.5; }
     .card.past:hover { opacity: 0.7; }
+
+    .card-banner {
+      width: calc(100% + 3rem);
+      margin: -1.4rem -1.5rem 0;
+      height: 160px;
+      object-fit: cover;
+      border-radius: var(--radius) var(--radius) 0 0;
+      display: block;
+    }
 
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
@@ -392,6 +402,7 @@
       }
 
       card.innerHTML = `
+        ${item.banner ? `<img class="card-banner" src="${item.banner}" alt="${item.nome}" loading="lazy">` : ''}
         <div class="card-header">
           <div class="card-title">${item.nome || 'Sem título'}</div>
           ${past ? '<span class="badge-past">Encerrado</span>' : ''}

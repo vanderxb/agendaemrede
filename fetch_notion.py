@@ -2,22 +2,28 @@
 """
 fetch_notion.py
 Busca dados do banco de dados do Notion via API oficial e salva em data.json.
+Banners são baixados localmente para evitar expiração das URLs do Notion.
 Executado pelo GitHub Actions periodicamente.
 """
 
 import json
 import os
 import sys
+import hashlib
 from datetime import datetime, timezone
 from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
+from pathlib import Path
 
 # ── Configuração ──────────────────────────────────────────────────────────────
 NOTION_TOKEN   = os.environ["NOTION_TOKEN"]
 DATABASE_ID    = "3283838fa826804bbd51f348624b7ed6"
 OUTPUT_FILE    = "data.json"
+BANNERS_DIR    = "banners"
 NOTION_VERSION = "2022-06-28"
 # ─────────────────────────────────────────────────────────────────────────────
+
+Path(BANNERS_DIR).mkdir(exist_ok=True)
 
 
 def notion_request(endpoint: str, payload=None) -> dict:
@@ -46,8 +52,24 @@ def notion_request(endpoint: str, payload=None) -> dict:
 
 
 def get_text(prop: dict) -> str:
+    """Extrai texto de diversas propriedades do Notion."""
     items = prop.get("rich_text") or prop.get("title") or []
-    return "".join(t.get("plain_text", "") for t in items).strip()
+    if items:
+        return "".join(t.get("plain_text", "") for t in items).strip()
+    ptype = prop.get("type", "")
+    if ptype == "phone_number":
+        return prop.get("phone_number") or ""
+    if ptype == "email":
+        return prop.get("email") or ""
+    if ptype == "number" and prop.get("number") is not None:
+        return str(prop.get("number"))
+    if ptype == "formula":
+        f = prop.get("formula", {})
+        return f.get("string") or (str(f.get("number")) if f.get("number") is not None else "") or ""
+    if ptype == "select":
+        s = prop.get("select")
+        return s.get("name", "") if s else ""
+    return ""
 
 
 def get_date(prop: dict, field: str = "start") -> str:
@@ -62,11 +84,57 @@ def get_url(prop: dict) -> str:
     return prop.get("url") or ""
 
 
+def get_file_url(prop: dict) -> str:
+    """Extrai URL de propriedade do tipo file/image."""
+    files = prop.get("files") or []
+    if not files:
+        return ""
+    f = files[0]
+    if f.get("type") == "external":
+        return f.get("external", {}).get("url", "")
+    if f.get("type") == "file":
+        return f.get("file", {}).get("url", "")
+    return ""
+
+
+def download_banner(remote_url: str) -> str:
+    """
+    Baixa o banner e salva em /banners/ com nome baseado no hash da URL original.
+    Retorna o caminho local relativo (ex: banners/abc123.jpg).
+    Se já existir, não baixa novamente.
+    """
+    base_url = remote_url.split("?")[0]
+    ext = base_url.split(".")[-1].lower()
+    if ext not in ("jpg", "jpeg", "png", "gif", "webp", "avif"):
+        ext = "jpg"
+    filename = hashlib.md5(base_url.encode()).hexdigest() + "." + ext
+    local_path = Path(BANNERS_DIR) / filename
+
+    if local_path.exists():
+        print(f"  Banner já existe: {filename}")
+        return f"{BANNERS_DIR}/{filename}"
+
+    try:
+        req = Request(remote_url, headers={"User-Agent": "Mozilla/5.0"})
+        with urlopen(req, timeout=30) as resp:
+            local_path.write_bytes(resp.read())
+        print(f"  Banner baixado: {filename}")
+        return f"{BANNERS_DIR}/{filename}"
+    except Exception as e:
+        print(f"  Falha ao baixar banner: {e}", file=sys.stderr)
+        return ""
+
+
 def parse_page(page: dict) -> dict:
     props = page.get("properties", {})
 
     def p(name):
         return props.get(name, {})
+
+    # Diagnóstico de horários — remova após confirmar que está funcionando
+    for col in ("Horário Inicial", "Horário Final"):
+        if col in props:
+            print(f"  Diagnóstico '{col}': tipo={props[col].get('type')} | raw={props[col]}")
 
     item = {}
 
@@ -130,6 +198,13 @@ def parse_page(page: dict) -> dict:
             item["observacoes"] = val
             break
 
+    # Banner
+    banner_url = get_file_url(p("Banner"))
+    if banner_url:
+        local = download_banner(banner_url)
+        if local:
+            item["banner"] = local
+
     return item
 
 
@@ -152,16 +227,17 @@ def main():
     pages = fetch_all_pages()
     print(f"Páginas retornadas pela API: {len(pages)}")
 
-    # Mostra propriedades do primeiro item para diagnóstico
     if pages:
         print("\nPropriedades encontradas:")
         for key in pages[0].get("properties", {}).keys():
             print(f"  - {key}")
 
+    print()
     items = []
     for page in pages:
         item = parse_page(page)
         if item.get("nome"):
+            print(f"  ✓ {item['nome']}")
             items.append(item)
 
     items.sort(key=lambda x: x.get("data_inicial", ""))
