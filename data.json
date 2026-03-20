@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-20T19:47:06.250649+00:00",
+  "updated_at": "2026-03-20T19:51:31.401410+00:00",
   "total": 6,
   "items": [
     {
@@ -10,7 +10,7 @@
       "local": "formula",
       "horario_inicial": "00:00",
       "horario_final": "00:00",
-      "link_inscricao": "www.formula.uol.br"
+      "link_inscricao": "https://www.formula.uol.br"
     },
     {
       "nome": "Inscrição CEDESP",
@@ -20,7 +20,7 @@
       "local": "Rua Antonio Bispo de Souza",
       "horario_inicial": "21:30",
       "horario_final": "18:30",
-      "link_inscricao": "www.despertar.org.br",
+      "link_inscricao": "https://www.despertar.org.br",
       "observacoes": "Observações teste",
       "banner": "banners/494c37186ff61ecb32a0b707d4f05fd3.png"
     },
@@ -32,7 +32,7 @@
       "local": "rua teste 123",
       "horario_inicial": "03:00",
       "horario_final": "06:00",
-      "link_inscricao": "www.despertar.org.br",
+      "link_inscricao": "https://www.despertar.org.br",
       "observacoes": "observações teste",
       "banner": "banners/750223dc666c02bc39ddccf11f956527.png"
     },
@@ -44,7 +44,7 @@
       "local": "RUA TESTE ABC",
       "horario_inicial": "03:00",
       "horario_final": "06:00",
-      "link_inscricao": "www.uol.com.br",
+      "link_inscricao": "https://www.uol.com.br",
       "observacoes": "teste teste teste",
       "banner": "banners/2e73969e67d020c08f220b42d2195317.png"
     },
@@ -56,7 +56,7 @@
       "local": "Rua teste 123",
       "horario_inicial": "03:00",
       "horario_final": "09:00",
-      "link_inscricao": "www.uol.com.br",
+      "link_inscricao": "https://www.uol.com.br",
       "observacoes": "Observações teste para inscrições",
       "banner": "banners/94e995fb599963f5ad07d41d8beb7da9.png"
     },
@@ -68,7 +68,7 @@
       "local": "Rua 123 123",
       "horario_inicial": "10:00",
       "horario_final": "16:00",
-      "link_inscricao": "www.globo.com",
+      "link_inscricao": "https://www.globo.com",
       "observacoes": "LNSCLAKNSCknadlcnkaçcknçkcnaskddddddcljdbcçajdvçjwecnjqwnehcbwoqpwxhnwe\newrkxjenprjnwpeprjncpewi",
       "banner": "banners/7ab183e173a1013475dc23bc231f406f.png"
     }
