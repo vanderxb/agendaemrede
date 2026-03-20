@@ -188,6 +188,8 @@ def parse_page(page: dict) -> dict:
     for col in ("Link de inscrição", "Link de Inscrição", "Link Inscrição", "Inscrição"):
         val = get_url(p(col)) or get_text(p(col))
         if val:
+            if not val.startswith("http://") and not val.startswith("https://"):
+                val = "https://" + val
             item["link_inscricao"] = val
             break
 
