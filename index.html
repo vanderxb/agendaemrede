@@ -5,21 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Agenda da Rede</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f7f4ef;
-      --surface: #ffffff;
-      --border: #e2ddd6;
-      --accent: #2d6a4f;
-      --accent-dark: #1b4332;
-      --text: #1a1a1a;
-      --muted: #7a7470;
-      --font-display: 'Fraunces', Georgia, serif;
-      --font-body: 'DM Sans', sans-serif;
-      --radius: 12px;
+      --bg:           #f5ede0;
+      --bg2:          #ede0cc;
+      --surface:      #fdf7f0;
+      --border:       #ddd0bb;
+      --purple:       #7b4fa6;
+      --purple-light: #a97fd4;
+      --purple-pale:  #ede0f5;
+      --navy:         #1a1f5e;
+      --navy-light:   #2d3580;
+      --teal:         #3a8fa0;
+      --text:         #1a1a2e;
+      --muted:        #8a7a6a;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'Nunito', sans-serif;
+      --radius:       16px;
     }
 
     body {
@@ -29,131 +34,168 @@
       min-height: 100vh;
     }
 
-    /* Header */
-    header {
-      background: var(--accent);
-      padding: 3rem 2rem 3.5rem;
-      position: relative;
+    /* ── Decorative dots pattern (top of header) ── */
+    .dots-border {
+      height: 28px;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
       overflow: hidden;
+      padding: 0 1rem;
     }
 
-    header::after {
-      content: '';
-      position: absolute;
-      bottom: -1px; left: 0; right: 0;
-      height: 36px;
+    .dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── Header ── */
+    header {
       background: var(--bg);
-      clip-path: ellipse(55% 100% at 50% 100%);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+      border-bottom: 3px solid var(--purple-pale);
     }
 
-    header h1 {
+    .header-logo {
       font-family: var(--font-display);
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      color: #fff;
-      line-height: 1.1;
-      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 0.5rem;
     }
 
-    header h1 em {
+    .header-logo .cafe {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
       font-style: italic;
       font-weight: 400;
-      opacity: 0.8;
+      color: var(--purple-light);
+      display: block;
     }
 
-    .header-meta {
-      margin-top: 0.6rem;
+    .header-logo .rede {
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 700;
+      color: var(--navy);
+      display: block;
+      letter-spacing: -0.02em;
+      line-height: 0.9;
+    }
+
+    .header-sub {
       font-size: 0.78rem;
-      color: rgba(255,255,255,0.6);
+      color: var(--muted);
+      margin-top: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
 
-    .header-meta span { color: rgba(255,255,255,0.9); }
+    .header-sub span { color: var(--purple); font-weight: 700; }
 
-    /* Toolbar */
+    /* ── Toolbar ── */
     .toolbar {
-      padding: 1.5rem 2rem 0.5rem;
+      padding: 1.25rem 2rem 0.5rem;
       display: flex;
       gap: 0.5rem;
       flex-wrap: wrap;
       align-items: center;
-    }
-
-    .filter-label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-right: 0.25rem;
+      justify-content: center;
     }
 
     .filter-btn {
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       color: var(--muted);
       font-family: var(--font-body);
-      font-size: 0.78rem;
-      padding: 0.35rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.4rem 1.1rem;
       cursor: pointer;
       border-radius: 999px;
       transition: all 0.15s;
+      letter-spacing: 0.03em;
     }
 
-    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .filter-btn:hover { border-color: var(--purple-light); color: var(--purple); }
 
-    /* Counter */
+    .filter-btn.active {
+      background: var(--purple);
+      border-color: var(--purple);
+      color: #fff;
+    }
+
+    /* ── Counter ── */
     .counter {
-      padding: 0.25rem 2rem 0.25rem;
+      text-align: center;
+      padding: 0.25rem 2rem 0.5rem;
       font-size: 0.75rem;
       color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
-    /* Grid */
-    main { padding: 0.75rem 2rem 3rem; }
+    /* ── Grid ── */
+    main { padding: 0.5rem 2rem 3rem; }
 
     #grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.25rem;
+      gap: 1.5rem;
       margin-top: 0.75rem;
     }
 
-    /* Card */
+    /* ── Card ── */
     .card {
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.4rem 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 0.9rem;
+      overflow: hidden;
       transition: box-shadow 0.2s, transform 0.2s;
       opacity: 0;
-      transform: translateY(10px);
-      animation: fadeUp 0.35s ease forwards;
-      overflow: hidden;
+      transform: translateY(12px);
+      animation: fadeUp 0.4s ease forwards;
     }
 
     .card:hover {
-      box-shadow: 0 8px 28px rgba(0,0,0,0.08);
-      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(123, 79, 166, 0.15);
+      transform: translateY(-4px);
     }
 
-    .card.past { opacity: 0.5; }
-    .card.past:hover { opacity: 0.7; }
-
-    .card-banner {
-      width: calc(100% + 3rem);
-      margin: -1.4rem -1.5rem 0;
-      height: 160px;
-      object-fit: cover;
-      border-radius: var(--radius) var(--radius) 0 0;
-      display: block;
-    }
+    .card.past { opacity: 0.5; filter: grayscale(0.4); }
+    .card.past:hover { opacity: 0.72; }
 
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Card header */
-    .card-header {
+    /* Banner */
+    .card-banner {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Card no-banner placeholder */
+    .card-banner-placeholder {
+      height: 8px;
+      background: linear-gradient(90deg, var(--purple) 0%, var(--teal) 50%, var(--purple-light) 100%);
+    }
+
+    /* Card body */
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      flex: 1;
+    }
+
+    /* Title */
+    .card-title-row {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -162,26 +204,29 @@
 
     .card-title {
       font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--text);
-      line-height: 1.3;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.25;
       flex: 1;
     }
 
     .badge-past {
-      font-size: 0.62rem;
-      background: #f0ede8;
+      font-size: 0.6rem;
+      font-weight: 700;
+      background: var(--bg2);
       color: var(--muted);
-      padding: 0.18rem 0.55rem;
+      padding: 0.2rem 0.6rem;
       border-radius: 999px;
       white-space: nowrap;
       flex-shrink: 0;
-      margin-top: 2px;
+      margin-top: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     /* Props */
-    .card-body { display: flex; flex-direction: column; gap: 0.45rem; flex: 1; }
+    .props { display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
 
     .prop {
       display: flex;
@@ -191,41 +236,46 @@
       line-height: 1.45;
     }
 
-    .prop-icon { flex-shrink: 0; width: 20px; text-align: center; font-size: 0.9rem; margin-top: 1px; }
+    .prop-icon { flex-shrink: 0; width: 20px; text-align: center; font-size: 0.9rem; }
     .prop-text { color: var(--text); }
-    .prop-muted { color: var(--muted); font-size: 0.75rem; display: block; margin-top: 2px; }
 
     /* Observações */
     .obs {
-      background: #f7f4ef;
-      border-left: 3px solid var(--border);
-      border-radius: 0 6px 6px 0;
+      background: var(--purple-pale);
+      border-left: 3px solid var(--purple-light);
+      border-radius: 0 8px 8px 0;
       padding: 0.5rem 0.75rem;
       font-size: 0.78rem;
-      color: var(--muted);
+      color: var(--navy-light);
       line-height: 1.5;
+      font-style: italic;
     }
 
-    /* Botão inscrição */
-    .card-footer { border-top: 1px solid var(--border); padding-top: 0.9rem; }
+    /* Footer do card */
+    .card-footer {
+      border-top: 2px solid var(--purple-pale);
+      padding: 0.9rem 1.4rem;
+    }
 
     .btn-inscricao {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      background: var(--accent);
+      background: var(--purple);
       color: #fff;
       text-decoration: none;
-      font-size: 0.8rem;
-      font-weight: 500;
-      padding: 0.5rem 1.1rem;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.55rem 1.2rem;
       border-radius: 999px;
       transition: background 0.15s, transform 0.15s;
+      letter-spacing: 0.03em;
     }
 
-    .btn-inscricao:hover { background: var(--accent-dark); transform: scale(1.02); }
+    .btn-inscricao:hover { background: var(--navy); transform: scale(1.03); }
 
-    /* State */
+    /* ── State ── */
     #state {
       text-align: center;
       padding: 5rem 2rem;
@@ -235,9 +285,9 @@
 
     .spinner {
       display: inline-block;
-      width: 28px; height: 28px;
-      border: 2px solid var(--border);
-      border-top-color: var(--accent);
+      width: 30px; height: 30px;
+      border: 3px solid var(--border);
+      border-top-color: var(--purple);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       margin-bottom: 1rem;
@@ -245,36 +295,42 @@
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Footer */
+    /* ── Footer ── */
     footer {
-      border-top: 1px solid var(--border);
-      padding: 1.25rem 2rem;
+      background: var(--navy);
+      padding: 1.5rem 2rem;
       font-size: 0.72rem;
-      color: var(--muted);
+      color: rgba(255,255,255,0.5);
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 0.5rem;
+      font-family: var(--font-body);
     }
 
-    footer a { color: var(--accent); text-decoration: none; }
+    footer a { color: var(--purple-light); text-decoration: none; }
 
     @media (max-width: 600px) {
-      header { padding: 2rem 1.25rem 3rem; }
+      header { padding: 2rem 1.25rem 1.75rem; }
       main, .toolbar, .counter { padding-left: 1.25rem; padding-right: 1.25rem; }
-      footer { padding: 1rem 1.25rem; }
+      footer { padding: 1.25rem; }
     }
   </style>
 </head>
 <body>
 
+<!-- Decorative dot border -->
+<div class="dots-border" id="dots-top"></div>
+
 <header>
-  <h1>Agenda <em>da Rede</em></h1>
-  <p class="header-meta">Atualizado em <span id="last-updated">—</span></p>
+  <div class="header-logo">
+    <span class="cafe">Café em</span>
+    <span class="rede">REDE</span>
+  </div>
+  <p class="header-sub">Atualizado em <span id="last-updated">—</span></p>
 </header>
 
 <div class="toolbar">
-  <span class="filter-label">Mostrar</span>
   <button class="filter-btn active" data-filter="futuros">Próximos eventos</button>
   <button class="filter-btn" data-filter="todos">Todos</button>
   <button class="filter-btn" data-filter="passados">Encerrados</button>
@@ -290,19 +346,47 @@
   <div id="grid" style="display:none"></div>
 </main>
 
+<div class="dots-border" id="dots-bottom"></div>
+
 <footer>
   <span>Dados via <a href="https://notion.so" target="_blank">Notion</a> · GitHub Pages</span>
   <span id="footer-count"></span>
 </footer>
 
 <script>
-  const stateEl = document.getElementById('state');
-  const gridEl  = document.getElementById('grid');
+  // Gera bolinhas coloridas decorativas
+  const colors = [
+    '#7b4fa6','#a97fd4','#c8a4e8','#1a1f5e','#2d3580','#3a8fa0',
+    '#5ab8cc','#9b59b6','#6c3483','#1f618d','#148f77','#d4a8f0'
+  ];
+
+  function makeDots(containerId) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    for (let i = 0; i < 48; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot';
+      const size = 8 + Math.random() * 10;
+      d.style.cssText = `
+        width:${size}px;height:${size}px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        opacity:${0.5 + Math.random()*0.5};
+        border-radius:${Math.random() > 0.3 ? '50%' : '3px'};
+      `;
+      el.appendChild(d);
+    }
+  }
+
+  makeDots('dots-top');
+  makeDots('dots-bottom');
+
+  // ── Data ──
+  const stateEl   = document.getElementById('state');
+  const gridEl    = document.getElementById('grid');
   const counterEl = document.getElementById('counter');
   let allItems = [];
   let currentFilter = 'futuros';
 
-  // Filtros
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -326,40 +410,32 @@
       }
 
       document.getElementById('footer-count').textContent =
-        `${allItems.length} evento${allItems.length !== 1 ? 's' : ''} no total`;
+        `${allItems.length} evento${allItems.length !== 1 ? 's' : ''} cadastrado${allItems.length !== 1 ? 's' : ''}`;
 
       render();
     } catch (e) {
       stateEl.innerHTML = `
-        <div style="font-size:1.5rem;margin-bottom:0.5rem">⚠️</div>
+        <div style="font-size:2rem;margin-bottom:0.5rem">⚠️</div>
         <div>${e.message}</div>
-        <div style="margin-top:0.5rem;font-size:0.75rem;color:#aaa">
+        <div style="margin-top:0.5rem;font-size:0.75rem">
           Execute o GitHub Action para gerar o data.json
         </div>`;
     }
   }
 
   function isEventPast(item) {
-    if (!item.data_final && !item.data_inicial) return false;
     const endStr = item.data_final || item.data_inicial;
+    if (!endStr) return false;
     const end = new Date(endStr);
     end.setHours(23, 59, 59);
     return end < new Date();
   }
 
   function render() {
-    const today = new Date();
-    today.setHours(0,0,0,0);
-
     let items = allItems;
+    if (currentFilter === 'futuros')  items = allItems.filter(i => !isEventPast(i));
+    if (currentFilter === 'passados') items = allItems.filter(i => isEventPast(i));
 
-    if (currentFilter === 'futuros') {
-      items = allItems.filter(i => !isEventPast(i));
-    } else if (currentFilter === 'passados') {
-      items = allItems.filter(i => isEventPast(i));
-    }
-
-    // Ordena por data inicial
     items = [...items].sort((a, b) => {
       if (!a.data_inicial) return 1;
       if (!b.data_inicial) return -1;
@@ -375,7 +451,7 @@
     if (!items.length) {
       gridEl.style.display = 'none';
       stateEl.style.display = 'block';
-      stateEl.innerHTML = '<div>Nenhum evento encontrado.</div>';
+      stateEl.innerHTML = '<div style="font-size:2rem">🌿</div><div style="margin-top:0.5rem">Nenhum evento encontrado.</div>';
       return;
     }
 
@@ -383,9 +459,8 @@
       const past = isEventPast(item);
       const card = document.createElement('div');
       card.className = 'card' + (past ? ' past' : '');
-      card.style.animationDelay = `${i * 40}ms`;
+      card.style.animationDelay = `${i * 50}ms`;
 
-      // Período
       let periodo = '';
       if (item.data_inicial && item.data_final && item.data_inicial !== item.data_final) {
         periodo = `${formatDate(item.data_inicial)} a ${formatDate(item.data_final)}`;
@@ -393,7 +468,6 @@
         periodo = formatDate(item.data_inicial);
       }
 
-      // Horário
       let horario = '';
       if (item.horario_inicial && item.horario_final) {
         horario = `${item.horario_inicial} às ${item.horario_final}`;
@@ -401,42 +475,25 @@
         horario = item.horario_inicial;
       }
 
+      const bannerHtml = item.banner
+        ? `<img class="card-banner" src="${item.banner}" alt="${item.nome}" loading="lazy">`
+        : `<div class="card-banner-placeholder"></div>`;
+
       card.innerHTML = `
-        ${item.banner ? `<img class="card-banner" src="${item.banner}" alt="${item.nome}" loading="lazy">` : ''}
-        <div class="card-header">
-          <div class="card-title">${item.nome || 'Sem título'}</div>
-          ${past ? '<span class="badge-past">Encerrado</span>' : ''}
-        </div>
-
+        ${bannerHtml}
         <div class="card-body">
-          ${item.instituicao ? `
-          <div class="prop">
-            <span class="prop-icon">🏫</span>
-            <span class="prop-text">${item.instituicao}</span>
-          </div>` : ''}
-
-          ${periodo ? `
-          <div class="prop">
-            <span class="prop-icon">📅</span>
-            <span class="prop-text">${periodo}</span>
-          </div>` : ''}
-
-          ${horario ? `
-          <div class="prop">
-            <span class="prop-icon">⏰</span>
-            <span class="prop-text">${horario}</span>
-          </div>` : ''}
-
-          ${item.local ? `
-          <div class="prop">
-            <span class="prop-icon">📍</span>
-            <span class="prop-text">${item.local}</span>
-          </div>` : ''}
-
-          ${item.observacoes ? `
-          <div class="obs">💬 ${item.observacoes}</div>` : ''}
+          <div class="card-title-row">
+            <div class="card-title">${item.nome || 'Sem título'}</div>
+            ${past ? '<span class="badge-past">Encerrado</span>' : ''}
+          </div>
+          <div class="props">
+            ${item.instituicao ? `<div class="prop"><span class="prop-icon">🏫</span><span class="prop-text">${item.instituicao}</span></div>` : ''}
+            ${periodo         ? `<div class="prop"><span class="prop-icon">📅</span><span class="prop-text">${periodo}</span></div>` : ''}
+            ${horario         ? `<div class="prop"><span class="prop-icon">⏰</span><span class="prop-text">${horario}</span></div>` : ''}
+            ${item.local      ? `<div class="prop"><span class="prop-icon">📍</span><span class="prop-text">${item.local}</span></div>` : ''}
+            ${item.observacoes ? `<div class="obs">💬 ${item.observacoes}</div>` : ''}
+          </div>
         </div>
-
         ${item.link_inscricao ? `
         <div class="card-footer">
           <a class="btn-inscricao" href="${item.link_inscricao}" target="_blank" rel="noopener">
@@ -451,7 +508,6 @@
 
   function formatDate(str) {
     if (!str) return '';
-    // Suporta YYYY-MM-DD e DD/MM/YYYY
     if (str.includes('-')) {
       const [y, m, d] = str.split('-');
       return `${d}/${m}/${y}`;
