@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-03-20T19:58:41.816935+00:00",
-  "total": 6,
+  "updated_at": "2026-03-20T20:01:22.457110+00:00",
+  "total": 7,
   "items": [
     {
       "nome": "formula",
@@ -59,6 +59,18 @@
       "link_inscricao": "https://www.uol.com.br",
       "observacoes": "Observações teste para inscrições",
       "banner": "banners/94e995fb599963f5ad07d41d8beb7da9.png"
+    },
+    {
+      "nome": "EVENTO TESTE HTML",
+      "instituicao": "TESTE HTML",
+      "data_inicial": "2026-03-29",
+      "data_final": "2026-04-25",
+      "local": "rua teste html teste",
+      "horario_inicial": "03:00",
+      "horario_final": "04:00",
+      "link_inscricao": "https://www.terra.com.br",
+      "observacoes": "teste html",
+      "banner": "banners/e78784f004150d31179ebb7d8acd0e0c.png"
     },
     {
       "nome": "Matrículas Cursos",
