@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agenda da Rede</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f4ef;
+      --surface: #ffffff;
+      --border: #e2ddd6;
+      --accent: #2d6a4f;
+      --accent-dark: #1b4332;
+      --text: #1a1a1a;
+      --muted: #7a7470;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif;
+      --radius: 12px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: var(--accent);
+      padding: 3rem 2rem 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 36px;
+      background: var(--bg);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+
+    header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: #fff;
+      line-height: 1.1;
+      font-weight: 600;
+    }
+
+    header h1 em {
+      font-style: italic;
+      font-weight: 400;
+      opacity: 0.8;
+    }
+
+    .header-meta {
+      margin-top: 0.6rem;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .header-meta span { color: rgba(255,255,255,0.9); }
+
+    /* Toolbar */
+    .toolbar {
+      padding: 1.5rem 2rem 0.5rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-right: 0.25rem;
+    }
+
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      padding: 0.35rem 1rem;
+      cursor: pointer;
+      border-radius: 999px;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* Counter */
+    .counter {
+      padding: 0.25rem 2rem 0.25rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* Grid */
+    main { padding: 0.75rem 2rem 3rem; }
+
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-top: 0.75rem;
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.35s ease forwards;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+      transform: translateY(-3px);
+    }
+
+    .card.past { opacity: 0.5; }
+    .card.past:hover { opacity: 0.7; }
+
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Card header */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      flex: 1;
+    }
+
+    .badge-past {
+      font-size: 0.62rem;
+      background: #f0ede8;
+      color: var(--muted);
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Props */
+    .card-body { display: flex; flex-direction: column; gap: 0.45rem; flex: 1; }
+
+    .prop {
+      display: flex;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      align-items: flex-start;
+      line-height: 1.45;
+    }
+
+    .prop-icon { flex-shrink: 0; width: 20px; text-align: center; font-size: 0.9rem; margin-top: 1px; }
+    .prop-text { color: var(--text); }
+    .prop-muted { color: var(--muted); font-size: 0.75rem; display: block; margin-top: 2px; }
+
+    /* Observações */
+    .obs {
+      background: #f7f4ef;
+      border-left: 3px solid var(--border);
+      border-radius: 0 6px 6px 0;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Botão inscrição */
+    .card-footer { border-top: 1px solid var(--border); padding-top: 0.9rem; }
+
+    .btn-inscricao {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      transition: background 0.15s, transform 0.15s;
+    }
+
+    .btn-inscricao:hover { background: var(--accent-dark); transform: scale(1.02); }
+
+    /* State */
+    #state {
+      text-align: center;
+      padding: 5rem 2rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 28px; height: 28px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.25rem 2rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      header { padding: 2rem 1.25rem 3rem; }
+      main, .toolbar, .counter { padding-left: 1.25rem; padding-right: 1.25rem; }
+      footer { padding: 1rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Agenda <em>da Rede</em></h1>
+  <p class="header-meta">Atualizado em <span id="last-updated">—</span></p>
+</header>
+
+<div class="toolbar">
+  <span class="filter-label">Mostrar</span>
+  <button class="filter-btn active" data-filter="futuros">Próximos eventos</button>
+  <button class="filter-btn" data-filter="todos">Todos</button>
+  <button class="filter-btn" data-filter="passados">Encerrados</button>
+</div>
+
+<div class="counter" id="counter"></div>
+
+<main>
+  <div id="state">
+    <div class="spinner"></div>
+    <div>Carregando agenda...</div>
+  </div>
+  <div id="grid" style="display:none"></div>
+</main>
+
+<footer>
+  <span>Dados via <a href="https://notion.so" target="_blank">Notion</a> · GitHub Pages</span>
+  <span id="footer-count"></span>
+</footer>
+
+<script>
+  const stateEl = document.getElementById('state');
+  const gridEl  = document.getElementById('grid');
+  const counterEl = document.getElementById('counter');
+  let allItems = [];
+  let currentFilter = 'futuros';
+
+  // Filtros
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      render();
+    });
+  });
+
+  async function load() {
+    try {
+      const res = await fetch('data.json?v=' + Date.now());
+      if (!res.ok) throw new Error('Arquivo data.json não encontrado.');
+      const data = await res.json();
+
+      allItems = data.items || [];
+
+      if (data.updated_at) {
+        document.getElementById('last-updated').textContent =
+          new Date(data.updated_at).toLocaleString('pt-BR');
+      }
+
+      document.getElementById('footer-count').textContent =
+        `${allItems.length} evento${allItems.length !== 1 ? 's' : ''} no total`;
+
+      render();
+    } catch (e) {
+      stateEl.innerHTML = `
+        <div style="font-size:1.5rem;margin-bottom:0.5rem">⚠️</div>
+        <div>${e.message}</div>
+        <div style="margin-top:0.5rem;font-size:0.75rem;color:#aaa">
+          Execute o GitHub Action para gerar o data.json
+        </div>`;
+    }
+  }
+
+  function isEventPast(item) {
+    if (!item.data_final && !item.data_inicial) return false;
+    const endStr = item.data_final || item.data_inicial;
+    const end = new Date(endStr);
+    end.setHours(23, 59, 59);
+    return end < new Date();
+  }
+
+  function render() {
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    let items = allItems;
+
+    if (currentFilter === 'futuros') {
+      items = allItems.filter(i => !isEventPast(i));
+    } else if (currentFilter === 'passados') {
+      items = allItems.filter(i => isEventPast(i));
+    }
+
+    // Ordena por data inicial
+    items = [...items].sort((a, b) => {
+      if (!a.data_inicial) return 1;
+      if (!b.data_inicial) return -1;
+      return new Date(a.data_inicial) - new Date(b.data_inicial);
+    });
+
+    counterEl.textContent = `${items.length} evento${items.length !== 1 ? 's' : ''}`;
+
+    stateEl.style.display = 'none';
+    gridEl.style.display = 'grid';
+    gridEl.innerHTML = '';
+
+    if (!items.length) {
+      gridEl.style.display = 'none';
+      stateEl.style.display = 'block';
+      stateEl.innerHTML = '<div>Nenhum evento encontrado.</div>';
+      return;
+    }
+
+    items.forEach((item, i) => {
+      const past = isEventPast(item);
+      const card = document.createElement('div');
+      card.className = 'card' + (past ? ' past' : '');
+      card.style.animationDelay = `${i * 40}ms`;
+
+      // Período
+      let periodo = '';
+      if (item.data_inicial && item.data_final && item.data_inicial !== item.data_final) {
+        periodo = `${formatDate(item.data_inicial)} a ${formatDate(item.data_final)}`;
+      } else if (item.data_inicial) {
+        periodo = formatDate(item.data_inicial);
+      }
+
+      // Horário
+      let horario = '';
+      if (item.horario_inicial && item.horario_final) {
+        horario = `${item.horario_inicial} às ${item.horario_final}`;
+      } else if (item.horario_inicial) {
+        horario = item.horario_inicial;
+      }
+
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="card-title">${item.nome || 'Sem título'}</div>
+          ${past ? '<span class="badge-past">Encerrado</span>' : ''}
+        </div>
+
+        <div class="card-body">
+          ${item.instituicao ? `
+          <div class="prop">
+            <span class="prop-icon">🏫</span>
+            <span class="prop-text">${item.instituicao}</span>
+          </div>` : ''}
+
+          ${periodo ? `
+          <div class="prop">
+            <span class="prop-icon">📅</span>
+            <span class="prop-text">${periodo}</span>
+          </div>` : ''}
+
+          ${horario ? `
+          <div class="prop">
+            <span class="prop-icon">⏰</span>
+            <span class="prop-text">${horario}</span>
+          </div>` : ''}
+
+          ${item.local ? `
+          <div class="prop">
+            <span class="prop-icon">📍</span>
+            <span class="prop-text">${item.local}</span>
+          </div>` : ''}
+
+          ${item.observacoes ? `
+          <div class="obs">💬 ${item.observacoes}</div>` : ''}
+        </div>
+
+        ${item.link_inscricao ? `
+        <div class="card-footer">
+          <a class="btn-inscricao" href="${item.link_inscricao}" target="_blank" rel="noopener">
+            🔗 Inscreva-se
+          </a>
+        </div>` : ''}
+      `;
+
+      gridEl.appendChild(card);
+    });
+  }
+
+  function formatDate(str) {
+    if (!str) return '';
+    // Suporta YYYY-MM-DD e DD/MM/YYYY
+    if (str.includes('-')) {
+      const [y, m, d] = str.split('-');
+      return `${d}/${m}/${y}`;
+    }
+    return str;
+  }
+
+  load();
+</script>
+</body>
+</html>
