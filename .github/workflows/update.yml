@@ -1,14 +1,9 @@
 name: Atualizar Agenda
 
 on:
-  # Roda a cada 6 horas automaticamente
   schedule:
     - cron: '0 */6 * * *'
-
-  # Permite rodar manualmente pelo GitHub
   workflow_dispatch:
-
-  # Roda também a cada push no main
   push:
     branches:
       - main
@@ -29,6 +24,8 @@ jobs:
           python-version: '3.11'
 
       - name: Buscar dados do Notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: python fetch_notion.py
 
       - name: Commitar data.json atualizado

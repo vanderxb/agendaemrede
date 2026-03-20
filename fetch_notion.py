@@ -1,178 +1,170 @@
 #!/usr/bin/env python3
 """
 fetch_notion.py
-Faz scraping da tabela pública do Notion e salva em data.json.
+Busca dados do banco de dados do Notion via API oficial e salva em data.json.
 Executado pelo GitHub Actions periodicamente.
 """
 
 import json
-import re
+import os
 import sys
 from datetime import datetime, timezone
 from urllib.request import urlopen, Request
-from urllib.error import URLError
-from html.parser import HTMLParser
+from urllib.error import URLError, HTTPError
 
 # ── Configuração ──────────────────────────────────────────────────────────────
-NOTION_URL = "https://sour-iberis-b64.notion.site/3283838fa8268033bc5dca68dc28d277?v=3283838fa82680478a0e000cbe4eb044"
-OUTPUT_FILE = "data.json"
+NOTION_TOKEN   = os.environ["NOTION_TOKEN"]
+DATABASE_ID    = "3283838fa8268033bc5dca68dc28d277"
+OUTPUT_FILE    = "data.json"
+NOTION_VERSION = "2022-06-28"
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-def fetch_html(url: str) -> str:
-    """Busca o HTML da página pública do Notion."""
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (X11; Linux x86_64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/120.0 Safari/537.36"
-        ),
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
-    }
-    req = Request(url, headers=headers)
+def notion_request(endpoint: str, payload=None) -> dict:
+    url = f"https://api.notion.com/v1/{endpoint}"
+    data = json.dumps(payload).encode() if payload is not None else b"{}"
+    req = Request(
+        url,
+        data=data,
+        method="POST" if payload is not None else "GET",
+        headers={
+            "Authorization":  f"Bearer {NOTION_TOKEN}",
+            "Notion-Version": NOTION_VERSION,
+            "Content-Type":   "application/json",
+        },
+    )
     try:
         with urlopen(req, timeout=30) as resp:
-            return resp.read().decode("utf-8", errors="replace")
+            return json.loads(resp.read())
+    except HTTPError as e:
+        body = e.read().decode()
+        print(f"Erro HTTP {e.code}: {body}", file=sys.stderr)
+        sys.exit(1)
     except URLError as e:
-        print(f"Erro ao buscar a página: {e}", file=sys.stderr)
+        print(f"Erro de rede: {e}", file=sys.stderr)
         sys.exit(1)
 
 
-class NotionTableParser(HTMLParser):
-    """
-    Parser simples que extrai linhas de uma tabela do Notion.
-    O Notion renderiza a galeria/tabela como divs com classes específicas.
-    Esta implementação coleta texto por célula e mapeia às colunas.
-    """
-
-    def __init__(self):
-        super().__init__()
-        self.headers: list[str] = []
-        self.rows: list[list[str]] = []
-        self._in_header = False
-        self._in_cell = False
-        self._current_cell: list[str] = []
-        self._current_row: list[str] = []
-        self._depth = 0
-        self._header_done = False
-
-    def handle_starttag(self, tag, attrs):
-        attrs_dict = dict(attrs)
-        cls = attrs_dict.get("class", "")
-
-        # Notion usa th para cabeçalhos e td para células em view de tabela
-        if tag == "th":
-            self._in_header = True
-            self._current_cell = []
-        elif tag == "td":
-            self._in_cell = True
-            self._current_cell = []
-
-    def handle_endtag(self, tag):
-        if tag == "th" and self._in_header:
-            self._in_header = False
-            self.headers.append(self._clean(" ".join(self._current_cell)))
-            self._current_cell = []
-        elif tag == "td" and self._in_cell:
-            self._in_cell = False
-            self._current_row.append(self._clean(" ".join(self._current_cell)))
-            self._current_cell = []
-        elif tag == "tr":
-            if self._current_row:
-                self.rows.append(self._current_row)
-                self._current_row = []
-
-    def handle_data(self, data):
-        if self._in_header or self._in_cell:
-            stripped = data.strip()
-            if stripped:
-                self._current_cell.append(stripped)
-
-    @staticmethod
-    def _clean(text: str) -> str:
-        return re.sub(r"\s+", " ", text).strip()
+def get_text(prop: dict) -> str:
+    items = prop.get("rich_text") or prop.get("title") or []
+    return "".join(t.get("plain_text", "") for t in items).strip()
 
 
-def normalize_date(value: str) -> str:
-    """Tenta normalizar datas para YYYY-MM-DD."""
-    if not value:
+def get_date(prop: dict, field: str = "start") -> str:
+    d = prop.get("date")
+    if not d:
         return ""
-    # Tenta DD/MM/YYYY
-    m = re.match(r"^(\d{1,2})[/\-.](\d{1,2})[/\-.](\d{4})$", value.strip())
-    if m:
-        d, mo, y = m.groups()
-        return f"{y}-{mo.zfill(2)}-{d.zfill(2)}"
-    # Já está em YYYY-MM-DD
-    if re.match(r"^\d{4}-\d{2}-\d{2}$", value.strip()):
-        return value.strip()
-    # Retorna como veio
-    return value.strip()
+    value = d.get(field) or ""
+    return value[:10] if value else ""
 
 
-# Mapeamento: nome da coluna no Notion → chave no JSON
-# Ajuste os nomes da esquerda para bater exatamente com os cabeçalhos da sua tabela.
-COLUMN_MAP = {
-    # Notion column name       : json key
-    "Nome":                      "nome",
-    "Título":                    "nome",
-    "Evento":                    "nome",
-    "Instituição":               "instituicao",
-    "Data Inicial":              "data_inicial",
-    "Data Final":                "data_final",
-    "Endereço/Local":            "local",
-    "Local":                     "local",
-    "Horário Inicial":           "horario_inicial",
-    "Horário Final":             "horario_final",
-    "Link de inscrição":         "link_inscricao",
-    "Link de Inscrição":         "link_inscricao",
-    "Observações":               "observacoes",
-    "Observações ":              "observacoes",  # com espaço extra, por precaução
-}
-
-DATE_KEYS = {"data_inicial", "data_final"}
+def get_url(prop: dict) -> str:
+    return prop.get("url") or ""
 
 
-def parse_items(headers: list[str], rows: list[list[str]]) -> list[dict]:
-    items = []
-    for row in rows:
-        item: dict = {}
-        for i, header in enumerate(headers):
-            if i >= len(row):
-                continue
-            value = row[i].strip()
-            if not value:
-                continue
-            key = COLUMN_MAP.get(header)
-            if key:
-                if key in DATE_KEYS:
-                    value = normalize_date(value)
-                item[key] = value
-        if item.get("nome"):  # ignora linhas sem nome
-            items.append(item)
-    return items
+def parse_page(page: dict) -> dict:
+    props = page.get("properties", {})
+
+    def p(name):
+        return props.get(name, {})
+
+    item = {}
+
+    # Nome / título
+    for col in ("Nome", "Título", "Evento", "Name", "Title"):
+        val = get_text(p(col))
+        if val:
+            item["nome"] = val
+            break
+
+    # Instituição
+    for col in ("Instituição", "Instituicao"):
+        val = get_text(p(col))
+        if val:
+            item["instituicao"] = val
+            break
+
+    # Datas
+    data_ini = get_date(p("Data Inicial"), "start")
+    data_fim = get_date(p("Data Final"), "start")
+    if not data_ini:
+        data_ini = get_date(p("Data"), "start")
+    if not data_fim:
+        data_fim = get_date(p("Data"), "end")
+    if data_ini:
+        item["data_inicial"] = data_ini
+    if data_fim:
+        item["data_final"] = data_fim
+
+    # Local
+    for col in ("Endereço/Local", "Endereço / Local", "Local", "Endereço"):
+        val = get_text(p(col))
+        if val:
+            item["local"] = val
+            break
+
+    # Horários
+    for col in ("Horário Inicial", "Horário Inicial "):
+        val = get_text(p(col))
+        if val:
+            item["horario_inicial"] = val
+            break
+
+    for col in ("Horário Final", "Horário Final "):
+        val = get_text(p(col))
+        if val:
+            item["horario_final"] = val
+            break
+
+    # Link de inscrição
+    for col in ("Link de inscrição", "Link de Inscrição", "Link Inscrição", "Inscrição"):
+        val = get_url(p(col)) or get_text(p(col))
+        if val:
+            item["link_inscricao"] = val
+            break
+
+    # Observações
+    for col in ("Observações", "Observacoes"):
+        val = get_text(p(col))
+        if val:
+            item["observacoes"] = val
+            break
+
+    return item
+
+
+def fetch_all_pages() -> list:
+    results = []
+    payload = {"page_size": 100}
+
+    while True:
+        data = notion_request(f"databases/{DATABASE_ID}/query", payload)
+        results.extend(data.get("results", []))
+        if not data.get("has_more"):
+            break
+        payload["start_cursor"] = data["next_cursor"]
+
+    return results
 
 
 def main():
-    print(f"Buscando: {NOTION_URL}")
-    html = fetch_html(NOTION_URL)
+    print(f"Consultando banco de dados: {DATABASE_ID}")
+    pages = fetch_all_pages()
+    print(f"Páginas retornadas pela API: {len(pages)}")
 
-    parser = NotionTableParser()
-    parser.feed(html)
+    # Mostra propriedades do primeiro item para diagnóstico
+    if pages:
+        print("\nPropriedades encontradas:")
+        for key in pages[0].get("properties", {}).keys():
+            print(f"  - {key}")
 
-    print(f"Cabeçalhos encontrados: {parser.headers}")
-    print(f"Linhas encontradas: {len(parser.rows)}")
+    items = []
+    for page in pages:
+        item = parse_page(page)
+        if item.get("nome"):
+            items.append(item)
 
-    if not parser.headers:
-        print(
-            "⚠️  Nenhum cabeçalho encontrado. "
-            "O Notion pode ter mudado o HTML ou a página não está em modo tabela.",
-            file=sys.stderr,
-        )
-        # Salva data.json vazio para não quebrar o site
-        items = []
-    else:
-        items = parse_items(parser.headers, parser.rows)
+    items.sort(key=lambda x: x.get("data_inicial", ""))
 
     output = {
         "updated_at": datetime.now(timezone.utc).isoformat(),
@@ -183,7 +175,7 @@ def main():
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
-    print(f"✅ {len(items)} eventos salvos em {OUTPUT_FILE}")
+    print(f"\n✅ {len(items)} eventos salvos em {OUTPUT_FILE}")
 
 
 if __name__ == "__main__":
