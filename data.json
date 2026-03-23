@@ -1,17 +1,7 @@
 {
-  "updated_at": "2026-03-23T11:10:47.697828+00:00",
-  "total": 7,
+  "updated_at": "2026-03-23T11:16:42.057439+00:00",
+  "total": 5,
   "items": [
-    {
-      "nome": "formula",
-      "instituicao": "formula",
-      "data_inicial": "2026-03-01",
-      "data_final": "2026-03-01",
-      "local": "formula",
-      "horario_inicial": "00:00",
-      "horario_final": "00:00",
-      "link_inscricao": "https://www.formula.uol.br"
-    },
     {
       "nome": "Inscrição CEDESP",
       "instituicao": "DESPERTAR",
@@ -59,18 +49,6 @@
       "link_inscricao": "https://www.uol.com.br",
       "observacoes": "Observações teste para inscrições",
       "banner": "banners/94e995fb599963f5ad07d41d8beb7da9.png"
-    },
-    {
-      "nome": "EVENTO TESTE HTML",
-      "instituicao": "TESTE HTML",
-      "data_inicial": "2026-03-29",
-      "data_final": "2026-04-25",
-      "local": "rua teste html teste",
-      "horario_inicial": "03:00",
-      "horario_final": "04:00",
-      "link_inscricao": "https://www.terra.com.br",
-      "observacoes": "teste html",
-      "banner": "banners/e78784f004150d31179ebb7d8acd0e0c.png"
     },
     {
       "nome": "Matrículas Cursos",
