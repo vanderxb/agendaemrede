@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mapa do Território · Café em Rede</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #f5ede0;
+      --bg2:          #ede0cc;
+      --surface:      #fdf7f0;
+      --border:       #ddd0bb;
+      --purple:       #7b4fa6;
+      --purple-light: #a97fd4;
+      --purple-pale:  #ede0f5;
+      --navy:         #1a1f5e;
+      --navy-light:   #2d3580;
+      --teal:         #3a8fa0;
+      --text:         #1a1a2e;
+      --muted:        #8a7a6a;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'Nunito', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Dots ── */
+    .dots-border {
+      height: 28px;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      overflow: hidden;
+      padding: 0 1rem;
+      flex-shrink: 0;
+    }
+
+    .dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--bg);
+      padding: 1.75rem 2rem 1.5rem;
+      text-align: center;
+      border-bottom: 3px solid var(--purple-pale);
+      flex-shrink: 0;
+    }
+
+    .header-logo {
+      font-family: var(--font-display);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .header-logo .cafe {
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--purple-light);
+      display: block;
+    }
+
+    .header-logo .rede {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--navy);
+      display: block;
+      letter-spacing: -0.02em;
+      line-height: 0.9;
+    }
+
+    .header-subtitle {
+      margin-top: 0.6rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ── Nav ── */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 2rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: none;
+      border: 2px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.4rem 1.1rem;
+      cursor: pointer;
+      border-radius: 999px;
+      transition: all 0.15s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .nav-btn:hover { border-color: var(--purple-light); color: var(--purple); }
+    .nav-btn.active { background: var(--purple); border-color: var(--purple); color: #fff; }
+
+    /* ── Map container ── */
+    .map-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 2rem 2rem;
+      gap: 1rem;
+      min-height: 0;
+    }
+
+    .map-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .map-info-text {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .map-info-text strong {
+      color: var(--navy);
+    }
+
+    .btn-fullscreen {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--purple);
+      color: #fff;
+      text-decoration: none;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      transition: background 0.15s;
+    }
+
+    .btn-fullscreen:hover { background: var(--navy); }
+
+    .map-frame-wrapper {
+      flex: 1;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid var(--border);
+      box-shadow: 0 8px 32px rgba(123, 79, 166, 0.1);
+      min-height: 500px;
+    }
+
+    .map-frame-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 500px;
+      border: none;
+      display: block;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--navy);
+      padding: 1.25rem 2rem;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-family: var(--font-body);
+      flex-shrink: 0;
+    }
+
+    footer a { color: var(--purple-light); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      header { padding: 1.25rem; }
+      .map-wrapper { padding: 1rem 1.25rem 1.5rem; }
+      footer { padding: 1rem 1.25rem; }
+      .btn-fullscreen { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="dots-border" id="dots-top"></div>
+
+<header>
+  <div class="header-logo">
+    <span class="cafe">Café em</span>
+    <span class="rede">REDE</span>
+  </div>
+  <p class="header-subtitle">Mapa do Território</p>
+</header>
+
+<nav>
+  <a class="nav-btn" href="index.html">📅 Agenda</a>
+  <a class="nav-btn active" href="mapa.html">🗺️ Mapa</a>
+</nav>
+
+<div class="map-wrapper">
+  <div class="map-info">
+    <span class="map-info-text">🗺️ <strong>Serviços do Território</strong> · São Paulo</span>
+    <a class="btn-fullscreen"
+       href="https://www.google.com/maps/d/u/0/viewer?mid=1wWqaX5vxN9BEKozGOSRnXImiF8ANjl0&ll=-23.677092513129047%2C-46.66465755&z=12"
+       target="_blank" rel="noopener">
+      ↗ Abrir no Google Maps
+    </a>
+  </div>
+
+  <div class="map-frame-wrapper">
+    <iframe
+      src="https://www.google.com/maps/d/u/0/embed?mid=1wWqaX5vxN9BEKozGOSRnXImiF8ANjl0&ll=-23.677092513129047%2C-46.66465755&z=12"
+      allowfullscreen
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Mapa dos Serviços do Território">
+    </iframe>
+  </div>
+</div>
+
+<div class="dots-border" id="dots-bottom"></div>
+
+<footer>
+  <span>Café em Rede · <a href="index.html">Ver agenda</a></span>
+  <span>Mapa via Google My Maps</span>
+</footer>
+
+<script>
+  const colors = [
+    '#7b4fa6','#a97fd4','#c8a4e8','#1a1f5e','#2d3580','#3a8fa0',
+    '#5ab8cc','#9b59b6','#6c3483','#1f618d','#148f77','#d4a8f0'
+  ];
+
+  function makeDots(containerId) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    for (let i = 0; i < 48; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot';
+      const size = 8 + Math.random() * 10;
+      d.style.cssText = `
+        width:${size}px;height:${size}px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        opacity:${0.5 + Math.random()*0.5};
+        border-radius:${Math.random() > 0.3 ? '50%' : '3px'};
+      `;
+      el.appendChild(d);
+    }
+  }
+
+  makeDots('dots-top');
+  makeDots('dots-bottom');
+</script>
+</body>
+</html>
