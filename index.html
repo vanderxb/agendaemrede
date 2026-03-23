@@ -209,6 +209,8 @@
       color: var(--navy);
       line-height: 1.25;
       flex: 1;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
 
     .badge-past {
@@ -237,7 +239,7 @@
     }
 
     .prop-icon { flex-shrink: 0; width: 20px; text-align: center; font-size: 0.9rem; }
-    .prop-text { color: var(--text); }
+    .prop-text { color: var(--text); word-break: break-word; overflow-wrap: break-word; }
 
     /* Observações */
     .obs {
@@ -249,6 +251,8 @@
       color: var(--navy-light);
       line-height: 1.5;
       font-style: italic;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
 
     /* Footer do card */
@@ -324,7 +328,7 @@
 
 <header>
   <div class="header-logo">
-    <span class="cafe">Agenda em</span>
+    <span class="cafe">Café em</span>
     <span class="rede">REDE</span>
   </div>
   <p class="header-sub">Atualizado em <span id="last-updated">—</span></p>
