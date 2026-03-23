@@ -3,7 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Agenda da Rede</title>
+  <title>Agenda em Rede</title>
+
+  <!-- Open Graph / WhatsApp / redes sociais -->
+  <meta property="og:type"        content="website"/>
+  <meta property="og:title"       content="Agenda em Rede"/>
+  <meta property="og:description" content="Confira os próximos eventos, encontros e atividades da rede. Atualizado direto do Notion."/>
+  <meta property="og:image"       content="https://sour-iberis-b64.notion.site/image/attachment%3Anotionbanner"/>
+  <meta property="og:locale"      content="pt_BR"/>
+  <meta name="twitter:card"       content="summary_large_image"/>
+  <meta name="description"        content="Confira os próximos eventos, encontros e atividades da rede. Atualizado direto do Notion."/>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -20,6 +30,8 @@
       --navy:         #1a1f5e;
       --navy-light:   #2d3580;
       --teal:         #3a8fa0;
+      --soon:         #e07b2a;
+      --soon-pale:    #fdf0e4;
       --text:         #1a1a2e;
       --muted:        #8a7a6a;
       --font-display: 'Playfair Display', Georgia, serif;
@@ -34,7 +46,7 @@
       min-height: 100vh;
     }
 
-    /* ── Decorative dots pattern (top of header) ── */
+    /* ── Dots ── */
     .dots-border {
       height: 28px;
       background: var(--navy);
@@ -46,26 +58,17 @@
       padding: 0 1rem;
     }
 
-    .dot {
-      width: 14px; height: 14px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
+    .dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
 
     /* ── Header ── */
     header {
       background: var(--bg);
       padding: 2.5rem 2rem 2rem;
       text-align: center;
-      position: relative;
       border-bottom: 3px solid var(--purple-pale);
     }
 
-    .header-logo {
-      font-family: var(--font-display);
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
+    .header-logo { font-family: var(--font-display); line-height: 1; margin-bottom: 0.5rem; }
 
     .header-logo .cafe {
       font-size: clamp(1.8rem, 4vw, 2.8rem);
@@ -94,9 +97,38 @@
 
     .header-sub span { color: var(--purple); font-weight: 700; }
 
+    /* ── Nav ── */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 2rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: none;
+      border: 2px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.4rem 1.1rem;
+      cursor: pointer;
+      border-radius: 999px;
+      transition: all 0.15s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .nav-btn:hover  { border-color: var(--purple-light); color: var(--purple); }
+    .nav-btn.active { background: var(--purple); border-color: var(--purple); color: #fff; }
+
     /* ── Toolbar ── */
     .toolbar {
-      padding: 1.25rem 2rem 0.5rem;
+      padding: 1rem 2rem 0.5rem;
       display: flex;
       gap: 0.5rem;
       flex-wrap: wrap;
@@ -118,18 +150,40 @@
       letter-spacing: 0.03em;
     }
 
-    .filter-btn:hover { border-color: var(--purple-light); color: var(--purple); }
+    .filter-btn:hover  { border-color: var(--purple-light); color: var(--purple); }
+    .filter-btn.active { background: var(--purple); border-color: var(--purple); color: #fff; }
 
-    .filter-btn.active {
-      background: var(--purple);
-      border-color: var(--purple);
-      color: #fff;
+    /* ── Search ── */
+    .search-wrap {
+      padding: 0 2rem 0.75rem;
+      display: flex;
+      justify-content: center;
     }
+
+    .search-input {
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 999px;
+      padding: 0.5rem 1.2rem 0.5rem 2.8rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a7a6a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 1rem center;
+    }
+
+    .search-input:focus { border-color: var(--purple-light); }
+    .search-input::placeholder { color: var(--muted); }
 
     /* ── Counter ── */
     .counter {
       text-align: center;
-      padding: 0.25rem 2rem 0.5rem;
+      padding: 0.1rem 2rem 0.5rem;
       font-size: 0.75rem;
       color: var(--muted);
       font-weight: 600;
@@ -166,23 +220,24 @@
       transform: translateY(-4px);
     }
 
-    .card.past { opacity: 0.5; filter: grayscale(0.4); }
+    .card.past   { opacity: 0.5; filter: grayscale(0.4); }
     .card.past:hover { opacity: 0.72; }
+
+    /* Em breve — borda laranja */
+    .card.soon { border-color: var(--soon); }
 
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
     /* Banner */
-    .card-banner {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
-    }
+    .card-banner { width: 100%; height: 180px; object-fit: cover; display: block; }
 
-    /* Card no-banner placeholder */
     .card-banner-placeholder {
       height: 8px;
       background: linear-gradient(90deg, var(--purple) 0%, var(--teal) 50%, var(--purple-light) 100%);
+    }
+
+    .card-banner-placeholder.soon {
+      background: linear-gradient(90deg, var(--soon) 0%, #f0a85a 100%);
     }
 
     /* Card body */
@@ -194,7 +249,7 @@
       flex: 1;
     }
 
-    /* Title */
+    /* Title row */
     .card-title-row {
       display: flex;
       justify-content: space-between;
@@ -213,11 +268,10 @@
       overflow-wrap: break-word;
     }
 
-    .badge-past {
+    /* Badges */
+    .badge {
       font-size: 0.6rem;
       font-weight: 700;
-      background: var(--bg2);
-      color: var(--muted);
       padding: 0.2rem 0.6rem;
       border-radius: 999px;
       white-space: nowrap;
@@ -227,16 +281,13 @@
       letter-spacing: 0.05em;
     }
 
+    .badge-past { background: var(--bg2); color: var(--muted); }
+    .badge-soon { background: var(--soon-pale); color: var(--soon); border: 1px solid #f5c9a0; }
+
     /* Props */
     .props { display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
 
-    .prop {
-      display: flex;
-      gap: 0.5rem;
-      font-size: 0.82rem;
-      align-items: flex-start;
-      line-height: 1.45;
-    }
+    .prop { display: flex; gap: 0.5rem; font-size: 0.82rem; align-items: flex-start; line-height: 1.45; }
 
     .prop-icon { flex-shrink: 0; width: 20px; text-align: center; font-size: 0.9rem; }
     .prop-text { color: var(--text); word-break: break-word; overflow-wrap: break-word; }
@@ -255,11 +306,8 @@
       overflow-wrap: break-word;
     }
 
-    /* Footer do card */
-    .card-footer {
-      border-top: 2px solid var(--purple-pale);
-      padding: 0.9rem 1.4rem;
-    }
+    /* Card footer */
+    .card-footer { border-top: 2px solid var(--purple-pale); padding: 0.9rem 1.4rem; }
 
     .btn-inscricao {
       display: inline-flex;
@@ -279,13 +327,16 @@
 
     .btn-inscricao:hover { background: var(--navy); transform: scale(1.03); }
 
-    /* ── State ── */
-    #state {
-      text-align: center;
-      padding: 5rem 2rem;
-      color: var(--muted);
-      font-size: 0.85rem;
+    /* Highlight texto buscado */
+    mark {
+      background: #fde68a;
+      color: var(--navy);
+      border-radius: 2px;
+      padding: 0 1px;
     }
+
+    /* ── State ── */
+    #state { text-align: center; padding: 5rem 2rem; color: var(--muted); font-size: 0.85rem; }
 
     .spinner {
       display: inline-block;
@@ -316,14 +367,13 @@
 
     @media (max-width: 600px) {
       header { padding: 2rem 1.25rem 1.75rem; }
-      main, .toolbar, .counter { padding-left: 1.25rem; padding-right: 1.25rem; }
+      main, .toolbar, .search-wrap, .counter { padding-left: 1.25rem; padding-right: 1.25rem; }
       footer { padding: 1.25rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- Decorative dot border -->
 <div class="dots-border" id="dots-top"></div>
 
 <header>
@@ -334,15 +384,25 @@
   <p class="header-sub">Atualizado em <span id="last-updated">—</span></p>
 </header>
 
-<nav style="display:flex;justify-content:center;gap:0.5rem;padding:0.75rem 2rem;background:var(--surface);border-bottom:1px solid var(--border);flex-wrap:wrap;">
-  <a style="background:var(--purple);border:2px solid var(--purple);color:#fff;font-family:var(--font-body);font-size:0.8rem;font-weight:700;padding:0.4rem 1.1rem;border-radius:999px;text-decoration:none;">📅 Agenda</a>
-  <a href="mapa.html" style="background:none;border:2px solid var(--border);color:var(--muted);font-family:var(--font-body);font-size:0.8rem;font-weight:700;padding:0.4rem 1.1rem;border-radius:999px;text-decoration:none;">🗺️ Mapa</a>
+<nav>
+  <a class="nav-btn active" href="index.html">📅 Agenda</a>
+  <a class="nav-btn" href="mapa.html">🗺️ Mapa</a>
 </nav>
 
 <div class="toolbar">
   <button class="filter-btn active" data-filter="futuros">Próximos eventos</button>
   <button class="filter-btn" data-filter="todos">Todos</button>
   <button class="filter-btn" data-filter="passados">Encerrados</button>
+</div>
+
+<div class="search-wrap">
+  <input
+    class="search-input"
+    id="search"
+    type="search"
+    placeholder="Buscar por nome, instituição ou local..."
+    autocomplete="off"
+  />
 </div>
 
 <div class="counter" id="counter"></div>
@@ -358,30 +418,25 @@
 <div class="dots-border" id="dots-bottom"></div>
 
 <footer>
-  <span>Desenvolvido por <a href="https://www.despertar.org.br" target="_blank">Despertar</a> · Agenda dos eventos das instituições participantes do Café em Rede</span>
+  <span>Desenvolvido por <a href="https://www.despertar.org.br" target="_blank">Despertar</a>Agenda de eventos das instituições participantes do Café em Rede</span>
   <span id="footer-count"></span>
 </footer>
 
 <script>
-  // Gera bolinhas coloridas decorativas
-  const colors = [
+  // ── Bolinhas decorativas ──
+  const dotColors = [
     '#7b4fa6','#a97fd4','#c8a4e8','#1a1f5e','#2d3580','#3a8fa0',
     '#5ab8cc','#9b59b6','#6c3483','#1f618d','#148f77','#d4a8f0'
   ];
 
-  function makeDots(containerId) {
-    const el = document.getElementById(containerId);
+  function makeDots(id) {
+    const el = document.getElementById(id);
     if (!el) return;
     for (let i = 0; i < 48; i++) {
       const d = document.createElement('div');
       d.className = 'dot';
       const size = 8 + Math.random() * 10;
-      d.style.cssText = `
-        width:${size}px;height:${size}px;
-        background:${colors[Math.floor(Math.random()*colors.length)]};
-        opacity:${0.5 + Math.random()*0.5};
-        border-radius:${Math.random() > 0.3 ? '50%' : '3px'};
-      `;
+      d.style.cssText = `width:${size}px;height:${size}px;background:${dotColors[Math.floor(Math.random()*dotColors.length)]};opacity:${0.5+Math.random()*0.5};border-radius:${Math.random()>0.3?'50%':'3px'};`;
       el.appendChild(d);
     }
   }
@@ -389,13 +444,17 @@
   makeDots('dots-top');
   makeDots('dots-bottom');
 
-  // ── Data ──
+  // ── Estado ──
   const stateEl   = document.getElementById('state');
   const gridEl    = document.getElementById('grid');
   const counterEl = document.getElementById('counter');
-  let allItems = [];
-  let currentFilter = 'futuros';
+  const searchEl  = document.getElementById('search');
 
+  let allItems     = [];
+  let currentFilter = 'futuros';
+  let searchQuery   = '';
+
+  // Filtros
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -405,6 +464,17 @@
     });
   });
 
+  // Busca — debounce leve
+  let searchTimer;
+  searchEl.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      searchQuery = searchEl.value.trim().toLowerCase();
+      render();
+    }, 200);
+  });
+
+  // ── Carrega dados ──
   async function load() {
     try {
       const res = await fetch('data.json?v=' + Date.now());
@@ -426,12 +496,11 @@
       stateEl.innerHTML = `
         <div style="font-size:2rem;margin-bottom:0.5rem">⚠️</div>
         <div>${e.message}</div>
-        <div style="margin-top:0.5rem;font-size:0.75rem">
-          Execute o GitHub Action para gerar o data.json
-        </div>`;
+        <div style="margin-top:0.5rem;font-size:0.75rem">Execute o GitHub Action para gerar o data.json</div>`;
     }
   }
 
+  // ── Helpers de data ──
   function isEventPast(item) {
     const endStr = item.data_final || item.data_inicial;
     if (!endStr) return false;
@@ -440,36 +509,71 @@
     return end < new Date();
   }
 
+  // "Em breve" = começa nos próximos 7 dias
+  function isEventSoon(item) {
+    if (!item.data_inicial || isEventPast(item)) return false;
+    const start = new Date(item.data_inicial);
+    const diff  = (start - new Date()) / (1000 * 60 * 60 * 24);
+    return diff >= 0 && diff <= 7;
+  }
+
+  // ── Busca com highlight ──
+  function highlight(text, query) {
+    if (!query || !text) return text || '';
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
+  }
+
+  function matchesSearch(item, query) {
+    if (!query) return true;
+    const fields = [item.nome, item.instituicao, item.local, item.observacoes].join(' ').toLowerCase();
+    return fields.includes(query);
+  }
+
+  // ── Render ──
   function render() {
     let items = allItems;
-    if (currentFilter === 'futuros')  items = allItems.filter(i => !isEventPast(i));
-    if (currentFilter === 'passados') items = allItems.filter(i => isEventPast(i));
 
+    // Filtro de status
+    if (currentFilter === 'futuros')  items = items.filter(i => !isEventPast(i));
+    if (currentFilter === 'passados') items = items.filter(i => isEventPast(i));
+
+    // Filtro de busca
+    if (searchQuery) items = items.filter(i => matchesSearch(i, searchQuery));
+
+    // Ordena por data
     items = [...items].sort((a, b) => {
       if (!a.data_inicial) return 1;
       if (!b.data_inicial) return -1;
       return new Date(a.data_inicial) - new Date(b.data_inicial);
     });
 
-    counterEl.textContent = `${items.length} evento${items.length !== 1 ? 's' : ''}`;
+    counterEl.textContent = `${items.length} evento${items.length !== 1 ? 's' : ''}${searchQuery ? ' encontrado' + (items.length !== 1 ? 's' : '') : ''}`;
 
     stateEl.style.display = 'none';
-    gridEl.style.display = 'grid';
+    gridEl.style.display  = 'grid';
     gridEl.innerHTML = '';
 
     if (!items.length) {
-      gridEl.style.display = 'none';
+      gridEl.style.display  = 'none';
       stateEl.style.display = 'block';
-      stateEl.innerHTML = '<div style="font-size:2rem">🌿</div><div style="margin-top:0.5rem">Nenhum evento encontrado.</div>';
+      stateEl.innerHTML = `
+        <div style="font-size:2rem">🌿</div>
+        <div style="margin-top:0.5rem">${searchQuery ? 'Nenhum evento encontrado para "' + searchQuery + '".' : 'Nenhum evento encontrado.'}</div>`;
       return;
     }
 
+    const q = searchQuery;
+
     items.forEach((item, i) => {
       const past = isEventPast(item);
+      const soon = isEventSoon(item);
+
       const card = document.createElement('div');
-      card.className = 'card' + (past ? ' past' : '');
+      card.className = 'card' + (past ? ' past' : '') + (soon ? ' soon' : '');
       card.style.animationDelay = `${i * 50}ms`;
 
+      // Período
       let periodo = '';
       if (item.data_inicial && item.data_final && item.data_inicial !== item.data_final) {
         periodo = `${formatDate(item.data_inicial)} a ${formatDate(item.data_final)}`;
@@ -477,6 +581,7 @@
         periodo = formatDate(item.data_inicial);
       }
 
+      // Horário
       let horario = '';
       if (item.horario_inicial && item.horario_final) {
         horario = `${item.horario_inicial} às ${item.horario_final}`;
@@ -484,30 +589,34 @@
         horario = item.horario_inicial;
       }
 
+      // Badge
+      let badgeHtml = '';
+      if (past) badgeHtml = '<span class="badge badge-past">Encerrado</span>';
+      else if (soon) badgeHtml = '<span class="badge badge-soon">🔔 Em breve</span>';
+
+      // Banner
       const bannerHtml = item.banner
         ? `<img class="card-banner" src="${item.banner}" alt="${item.nome}" loading="lazy">`
-        : `<div class="card-banner-placeholder"></div>`;
+        : `<div class="card-banner-placeholder${soon ? ' soon' : ''}"></div>`;
 
       card.innerHTML = `
         ${bannerHtml}
         <div class="card-body">
           <div class="card-title-row">
-            <div class="card-title">${item.nome || 'Sem título'}</div>
-            ${past ? '<span class="badge-past">Encerrado</span>' : ''}
+            <div class="card-title">${highlight(item.nome, q) || 'Sem título'}</div>
+            ${badgeHtml}
           </div>
           <div class="props">
-            ${item.instituicao ? `<div class="prop"><span class="prop-icon">🏫</span><span class="prop-text">${item.instituicao}</span></div>` : ''}
-            ${periodo         ? `<div class="prop"><span class="prop-icon">📅</span><span class="prop-text">${periodo}</span></div>` : ''}
-            ${horario         ? `<div class="prop"><span class="prop-icon">⏰</span><span class="prop-text">${horario}</span></div>` : ''}
-            ${item.local      ? `<div class="prop"><span class="prop-icon">📍</span><span class="prop-text">${item.local}</span></div>` : ''}
-            ${item.observacoes ? `<div class="obs">💬 ${item.observacoes}</div>` : ''}
+            ${item.instituicao ? `<div class="prop"><span class="prop-icon">🏫</span><span class="prop-text">${highlight(item.instituicao, q)}</span></div>` : ''}
+            ${periodo          ? `<div class="prop"><span class="prop-icon">📅</span><span class="prop-text">${periodo}</span></div>` : ''}
+            ${horario          ? `<div class="prop"><span class="prop-icon">⏰</span><span class="prop-text">${horario}</span></div>` : ''}
+            ${item.local       ? `<div class="prop"><span class="prop-icon">📍</span><span class="prop-text">${highlight(item.local, q)}</span></div>` : ''}
+            ${item.observacoes ? `<div class="obs">💬 ${highlight(item.observacoes, q)}</div>` : ''}
           </div>
         </div>
         ${item.link_inscricao ? `
         <div class="card-footer">
-          <a class="btn-inscricao" href="${item.link_inscricao}" target="_blank" rel="noopener">
-            🔗 Inscreva-se
-          </a>
+          <a class="btn-inscricao" href="${item.link_inscricao}" target="_blank" rel="noopener">🔗 Inscreva-se</a>
         </div>` : ''}
       `;
 
