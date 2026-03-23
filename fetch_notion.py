@@ -206,6 +206,23 @@ def parse_page(page: dict) -> dict:
         local = download_banner(banner_url)
         if local:
             item["banner"] = local
+    
+    # Status — só retorna itens aprovados
+    status = ""
+    for col in ("Status", "status"):
+        s = props.get(col, {})
+        # Status pode ser select ou status do Notion
+        if s.get("type") == "status":
+            opt = s.get("status")
+            status = opt.get("name", "") if opt else ""
+        elif s.get("type") == "select":
+            opt = s.get("select")
+            status = opt.get("name", "") if opt else ""
+        if status:
+            break
+
+    if status and status.lower() != "aprovado":
+        return {}
 
     return item
 
