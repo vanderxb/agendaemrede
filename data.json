@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-04-06T18:43:48.302557+00:00",
-  "total": 9,
+  "updated_at": "2026-04-06T19:45:23.614118+00:00",
+  "total": 10,
   "items": [
     {
       "nome": "Programa Ambientes Verdes e Saudáveis (PAVS)",
@@ -109,6 +109,18 @@
       "link_inscricao": "https://prefeitura.sp.gov.br/web/saude/atencao_basica/pavs",
       "observacoes": "PEV do PAVS - Nesta UBS você pode entregar óleo de cozinha usado, pilhas/baterias e medicamentos vencidos ou em desuso.\nFaça o descarte consciente!",
       "banner": "banners/38be036e8a187bfa9660e0c2e222279c.jpg"
+    },
+    {
+      "nome": "Cursos Profissionalizantes - CEDESP",
+      "instituicao": "Despertar",
+      "data_inicial": "2026-04-06",
+      "data_final": "2026-07-31",
+      "local": "Rua Antonio Bispo de Souza, 182 - Jardim Vilas Boas",
+      "horario_inicial": "08:00",
+      "horario_final": "21:30",
+      "link_inscricao": "https://forms.gle/VdwbxLqFdJVoAmh28",
+      "observacoes": "Lista de Interesse - Cursos Profissionalizantes do CEDESP 2º semestre 2026 \n\nCURSOS:\n- ASSISTENTE ADMINISTRATIVO (MANHÃ OU NOITE) \n- ASSISTENTE DE RECURSOS HUMANOS(TARDE)  \n- OPERAÇÃO DE COMPUTADORES – INFORMÁTICA (MANHÃ) \n- PROGRAMAÇÃO DE DISPOSITIVOS MÓVEIS (TARDE) \n- PROGRAMAÇÃO WEB (TARDE) \n- MONTAGEM E REPARAÇÃO DE COMPUTADORES (TARDE) \n- MONITORAMENTO DE SISTEMAS ELETRÔNICOS DE SEGURANÇA (NOITE)",
+      "banner": "banners/73e705642e7581775ee608ff94efd51f.jpg"
     }
   ]
 }
