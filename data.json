@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-29T17:18:03.435142+00:00",
+  "updated_at": "2026-04-29T19:09:23.020814+00:00",
   "total": 10,
   "items": [
     {
@@ -16,14 +16,14 @@
     },
     {
       "nome": "Programa Ambientes Verdes e Saudáveis (PAVS)",
-      "instituicao": "AMA/UBS Vila Clara",
+      "instituicao": "UBS Milton Santos",
       "data_inicial": "2026-01-02",
       "data_final": "2026-12-28",
-      "local": "Rua Rolando Curti,701",
+      "local": "Av. Ceci, 2249",
       "horario_inicial": "08:00",
       "horario_final": "17:00",
       "link_inscricao": "https://prefeitura.sp.gov.br/web/saude/atencao_basica/pavs",
-      "observacoes": "PEV do PAVS - Nesta UBS recebe-se: óleo de cozinha usado, pilhas/baterias e medicamentos vencidos ou em desuso.\nFaça descarte consciente!",
+      "observacoes": "PEV do PAVS - Nesta UBS você pode descartar medicamentos vencidos ou em desuso.\nFaça o descarte correto!",
       "banner": "banners/38be036e8a187bfa9660e0c2e222279c.jpg"
     },
     {
@@ -40,26 +40,14 @@
     },
     {
       "nome": "Programa Ambientes Verdes e Saudáveis (PAVS)",
-      "instituicao": "UBS Milton Santos",
+      "instituicao": "UBS Cupecê",
       "data_inicial": "2026-01-02",
       "data_final": "2026-12-28",
-      "local": "Av. Ceci, 2249",
+      "local": "Av. Santa Catarina, 1523",
       "horario_inicial": "08:00",
       "horario_final": "17:00",
       "link_inscricao": "https://prefeitura.sp.gov.br/web/saude/atencao_basica/pavs",
       "observacoes": "PEV do PAVS - Nesta UBS você pode descartar medicamentos vencidos ou em desuso.\nFaça o descarte correto!",
-      "banner": "banners/38be036e8a187bfa9660e0c2e222279c.jpg"
-    },
-    {
-      "nome": "Programa Ambientes Verdes e Saudáveis (PAVS)",
-      "instituicao": "UBS Jardim Lourdes",
-      "data_inicial": "2026-01-02",
-      "data_final": "2026-12-28",
-      "local": "Av. Engenheiro Armando de Arruda Pereira, 4004",
-      "horario_inicial": "08:00",
-      "horario_final": "17:00",
-      "link_inscricao": "https://prefeitura.sp.gov.br/web/saude/atencao_basica/pavs",
-      "observacoes": "Nesta UBS você pode descartar medicamentos vencidos ou em desuso.\nFaça o descarte correto!",
       "banner": "banners/38be036e8a187bfa9660e0c2e222279c.jpg"
     },
     {
@@ -76,14 +64,14 @@
     },
     {
       "nome": "Programa Ambientes Verdes e Saudáveis (PAVS)",
-      "instituicao": "UBS Cupecê",
+      "instituicao": "UBS Jardim Lourdes",
       "data_inicial": "2026-01-02",
       "data_final": "2026-12-28",
-      "local": "Av. Santa Catarina, 1523",
+      "local": "Av. Engenheiro Armando de Arruda Pereira, 4004",
       "horario_inicial": "08:00",
       "horario_final": "17:00",
       "link_inscricao": "https://prefeitura.sp.gov.br/web/saude/atencao_basica/pavs",
-      "observacoes": "PEV do PAVS - Nesta UBS você pode descartar medicamentos vencidos ou em desuso.\nFaça o descarte correto!",
+      "observacoes": "Nesta UBS você pode descartar medicamentos vencidos ou em desuso.\nFaça o descarte correto!",
       "banner": "banners/38be036e8a187bfa9660e0c2e222279c.jpg"
     },
     {
@@ -108,6 +96,18 @@
       "horario_final": "17:00",
       "link_inscricao": "https://prefeitura.sp.gov.br/web/saude/atencao_basica/pavs",
       "observacoes": "PEV do PAVS - Nesta UBS você pode entregar óleo de cozinha usado, pilhas/baterias e medicamentos vencidos ou em desuso.\nFaça o descarte consciente!",
+      "banner": "banners/38be036e8a187bfa9660e0c2e222279c.jpg"
+    },
+    {
+      "nome": "Programa Ambientes Verdes e Saudáveis (PAVS)",
+      "instituicao": "AMA/UBS Vila Clara",
+      "data_inicial": "2026-01-02",
+      "data_final": "2026-12-28",
+      "local": "Rua Rolando Curti,701",
+      "horario_inicial": "08:00",
+      "horario_final": "17:00",
+      "link_inscricao": "https://prefeitura.sp.gov.br/web/saude/atencao_basica/pavs",
+      "observacoes": "PEV do PAVS - Nesta UBS recebe-se: óleo de cozinha usado, pilhas/baterias e medicamentos vencidos ou em desuso.\nFaça descarte consciente!",
       "banner": "banners/38be036e8a187bfa9660e0c2e222279c.jpg"
     },
     {
