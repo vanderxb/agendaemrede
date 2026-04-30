@@ -1,7 +1,19 @@
 {
-  "updated_at": "2026-04-30T21:48:57.208964+00:00",
-  "total": 10,
+  "updated_at": "2026-04-30T22:42:16.933818+00:00",
+  "total": 15,
   "items": [
+    {
+      "nome": "Elas Tocam!",
+      "instituicao": "União Deixa Ela Tocar (Coletiva) Espaço Cultural Independente Casa Delas (Espaço)",
+      "data_inicial": "2026-01-01",
+      "data_final": "2026-10-31",
+      "local": "Rua José Eid Maluf, 20",
+      "horario_inicial": "19:30",
+      "horario_final": "21:30",
+      "link_inscricao": "https://drive.google.com/drive/folders/1mQVqSl46gUIf9k-3E915IPBv7WKkDdYd?usp=sharing",
+      "observacoes": "Segue a programação completa https://drive.google.com/drive/folders/1mQVqSl46gUIf9k-3E915IPBv7WKkDdYd?usp=sharing",
+      "banner": "banners/bed970aa3fa375a75f54863788f852e5.png"
+    },
     {
       "nome": "Programa Ambientes Verdes e Saudáveis (PAVS)",
       "instituicao": "UBS Parque Imperial",
@@ -109,6 +121,54 @@
       "link_inscricao": "https://prefeitura.sp.gov.br/web/saude/atencao_basica/pavs",
       "observacoes": "PEV do PAVS - Nesta UBS recebe-se: óleo de cozinha usado, pilhas/baterias e medicamentos vencidos ou em desuso.\nFaça descarte consciente!",
       "banner": "banners/38be036e8a187bfa9660e0c2e222279c.jpg"
+    },
+    {
+      "nome": "Aulas de Capoeira",
+      "instituicao": "Grupo de Capoeira Novas Raízes",
+      "data_inicial": "2026-01-13",
+      "data_final": "2026-06-25",
+      "local": "Associação Amor Amar Rua Rainha das Missões 206",
+      "horario_inicial": "19:30",
+      "horario_final": "21:30",
+      "link_inscricao": "https://@capoeira.novasraizes",
+      "observacoes": "Aulas de capoeira Gratuita para crianças",
+      "banner": "banners/1a3f74564742df79d2b380839e94b5d5.png"
+    },
+    {
+      "nome": "Aulas de Capoeira",
+      "instituicao": "Grupo de Capoeira Novas Raízes",
+      "data_inicial": "2026-01-17",
+      "data_final": "2026-12-12",
+      "local": "Projeto Arco- Iris Rua Arthur Capodaglio 11",
+      "horario_inicial": "09:00",
+      "horario_final": "11:00",
+      "link_inscricao": "https://@capoeira.novasraizes",
+      "observacoes": "Capoeira gratuita para todas as idades, Horario da aula experimental de 10 a 11h",
+      "banner": "banners/c4595bfca5456db81aa5fca2d4f9f876.png"
+    },
+    {
+      "nome": "Capoterapia",
+      "instituicao": "Grupo de Capoeira Novas Raízes",
+      "data_inicial": "2026-02-02",
+      "data_final": "2026-12-07",
+      "local": "CCA CEJOLE Rua Edoardo Macheroni, 50",
+      "horario_inicial": "19:30",
+      "horario_final": "20:30",
+      "link_inscricao": "https://@capoeira.novasraizes",
+      "observacoes": "Capoterapia para pessoas adultas, todas as segundas feiras das 19.30 as 20.30h",
+      "banner": "banners/6cb99c49b3a6e9f00242fca9ca6d461a.png"
+    },
+    {
+      "nome": "Aulas de Capoeira",
+      "instituicao": "Grupo de Capoeira Novas Raízes",
+      "data_inicial": "2026-02-06",
+      "data_final": "2026-12-04",
+      "local": "Projeto Cerejeira Av. Durval Pinto Ferreira 823",
+      "horario_inicial": "19:30",
+      "horario_final": "20:30",
+      "link_inscricao": "https://@capoeira.novasraizes",
+      "observacoes": "Aulas gratuitas de Capoeira. Crianças de 07 a 14 anos\nTodas as sextas feiras das 19.30h as 20.30h\nÉ só chegar e fazer um aula experimental",
+      "banner": "banners/ee30fd4f3fce5a1865ed2b9d168ab24d.png"
     },
     {
       "nome": "Cursos Profissionalizantes - CEDESP",
